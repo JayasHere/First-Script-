@@ -1,0 +1,145 @@
+local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+
+local Window = Rayfield:CreateWindow({
+   Name = "Tap Topia Reborn🌟",
+   Icon = 0,
+   LoadingTitle = "Loading...",
+   LoadingSubtitle = "by THE NEW HACKER",
+   Theme = "AmberGlow",
+})
+
+local MainTab = Window:CreateTab("Main🏠", nil)
+local SecondTab = Window:CreateTab("Eggs and Teleport", "rewind")
+
+local isTeleporting = false
+local teleportButton = MainTab:CreateToggle({
+   Name = "Teleport To Houses🏠",
+   CurrentValue = false,
+   Flag = "TeleportFlag",
+   Callback = function(Value)
+      if Value then
+         isTeleporting = true
+         print("Teleporting to houses enabled!")
+         -- Start teleporting in a separate thread
+         task.spawn(function()
+            local player = game.Players.LocalPlayer
+            local character = player.Character or player.CharacterAdded:Wait()
+            local hrp = character:WaitForChild("HumanoidRootPart")
+
+            -- Houses Path
+            local housesFolder = workspace:WaitForChild("Scripted"):WaitForChild("Islands"):WaitForChild("Easter"):WaitForChild("Houses")
+
+            -- Loop through 10 houses
+            while isTeleporting do
+               for i = 1, 10 do
+                  if not isTeleporting then break end -- Stop teleporting if the toggle is turned off
+                  local house = housesFolder:FindFirstChild(tostring(i))
+                  if house then
+                     local touchPart = house:FindFirstChild("TouchPart")
+                     if touchPart then
+                        hrp.CFrame = touchPart.CFrame + Vector3.new(0, 6, 0)
+                        wait(1)
+                     end
+                  end
+               end
+               wait(1) -- Wait to check condition regularly
+            end
+         end)
+      else
+         isTeleporting = false
+         print("Teleporting to houses disabled!")
+      end
+   end,
+})
+
+-- Hatch Event Toggle (On/Off)
+local isHatching = false
+local hatchButton = SecondTab:CreateToggle({
+   Name = "Hatch Event Egg🎉",  
+   CurrentValue = false,        
+   Flag = "HatchFlag",          
+   Callback = function(Value)   
+      if Value then             
+         isHatching = true
+         print("Hatching eggs enabled!")
+         -- Hatch Event Egg
+         while isHatching do
+            local args = {
+                [1] = "Spring",
+                [2] = "Triple"
+            }
+            game:GetService("ReplicatedStorage").Functions.Hatch:InvokeServer(unpack(args))
+            wait(1)
+         end
+      else
+         isHatching = false
+         print("Hatching eggs disabled!")
+      end
+   end,
+})
+
+-- Auto Clicker Toggle (On/Off)
+local isClicking = false
+local clickButton = SecondTab:CreateToggle({
+   Name = "Auto Clicker🖱️",   
+   CurrentValue = false,      
+   Flag = "ClickFlag",        
+   Callback = function(Value)
+      if Value then
+         isClicking = true
+         print("Auto Clicker enabled!")
+         -- Auto Clicker
+         while isClicking do
+            game:GetService("ReplicatedStorage").Events.Click:FireServer()
+            wait(0.1) -- Adjust the wait time for clicking speed
+         end
+      else
+         isClicking = false
+         print("Auto Clicker disabled!")
+      end
+   end,
+})
+
+local isWorldBoostEnabled = false -- Toggle state for world boost
+
+local worldBoostToggle = MainTab:CreateToggle({
+   Name = "Enable World Boost 🌍",
+   CurrentValue = false,
+   Flag = "WorldBoostFlag",
+   Callback = function(Value)
+      if Value then
+         isWorldBoostEnabled = true
+         print("World Boost enabled!")
+         -- Start applying the world boost in a separate thread
+         task.spawn(function()
+            while isWorldBoostEnabled do
+               local args = {
+                   [1] = "Toxic Forest" -- Replace with the desired world name
+               }
+               local success, err = pcall(function()
+                   game:GetService("ReplicatedStorage").Events.SetWorldBoost:FireServer(unpack(args))
+               end)
+
+               if success then
+                   print("World Boost applied for:", args[1])
+               else
+                   warn("Failed to apply World Boost. Error:", err)
+               end
+
+               task.wait(1) -- Adjust the delay between boost applications
+            end
+         end)
+      else
+         isWorldBoostEnabled = false
+         print("World Boost disabled!")
+      end
+   end,
+})
+
+
+local MainButton = MainTab:CreateButton({
+    Name = "MORE STUFF COMING SOON!",
+    Callback = function()
+    -- The function that takes place when the button is pressed
+    end,
+ })
