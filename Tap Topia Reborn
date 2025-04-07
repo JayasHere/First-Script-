@@ -4,7 +4,7 @@ local Window = Rayfield:CreateWindow({
    Name = "Tap Topia Reborn🌟",
    Icon = 0,
    LoadingTitle = "Loading...",
-   LoadingSubtitle = "by THE NEW HACKER",
+   LoadingSubtitle = "by 1XHD1",
    Theme = "AmberGlow",
 })
 
@@ -38,7 +38,7 @@ local teleportButton = MainTab:CreateToggle({
                      local touchPart = house:FindFirstChild("TouchPart")
                      if touchPart then
                         hrp.CFrame = touchPart.CFrame + Vector3.new(0, 6, 0)
-                        wait(1)
+                        wait(0.7)
                      end
                   end
                end
@@ -69,7 +69,7 @@ local hatchButton = SecondTab:CreateToggle({
                 [2] = "Triple"
             }
             game:GetService("ReplicatedStorage").Functions.Hatch:InvokeServer(unpack(args))
-            wait(1)
+            wait(0.1)
          end
       else
          isHatching = false
